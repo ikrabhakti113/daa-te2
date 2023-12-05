@@ -1,3 +1,4 @@
+import tracemalloc
 import dpImplementation
 import BnBImplementation
 import time
@@ -10,11 +11,13 @@ def read_first_lines(filename, lines):
  
 
 def run_experiment(algorithm, inputfile, vertex):
+    tracemalloc.start()
     start_time = time.time()
     algorithm(inputfile, vertex)
+    memory_usage = tracemalloc.get_traced_memory()
+    tracemalloc.stop()
     end_time = time.time()
     execution_time = end_time - start_time
-    memory_usage = psutil.virtual_memory().used  # Total used memory in bytes
     return execution_time, memory_usage
 
 def main():
@@ -34,7 +37,7 @@ def main():
 
 
     print(f"BnB Time (Nodes: 60, Cutoff Time: 300s): {bnb_time_60}, BnB Memory: {bnb_memory_60}")
-    print(f"DP Time (Nodes: 100000, Cutoff Time: None): {dp_time_100000}, DP Memory: {dp_memory_100000}")
+    print(f"DP Time (Nodes: 10000, Cutoff Time: None): {dp_time_10000}, DP Memory: {dp_memory_10000}")
     print(f"BnB Time (Nodes: 90, Cutoff Time: 300s): {bnb_time_90}, BnB Memory: {bnb_memory_90}")
     print(f"DP Time (Nodes: 100000, Cutoff Time: None): {dp_time_100000}, DP Memory: {dp_memory_100000}")
     print(f"BnB Time (Nodes: 120, Cutoff Time: 900s): {bnb_time_120}, BnB Memory: {bnb_memory_120}")
